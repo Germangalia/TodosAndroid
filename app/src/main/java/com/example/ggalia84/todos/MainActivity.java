@@ -25,7 +25,10 @@ public class MainActivity extends AppCompatActivity
 
     private static final String SHARED_PREFERENCES_TODOS = "SP_TODOS";
     private static final String TODO_LIST = "todo_list";
+
     private Gson gson;
+
+    public TodoArrayList tasks;
 
     @Override
     protected void onDestroy() {
@@ -41,6 +44,19 @@ public class MainActivity extends AppCompatActivity
         // Restore preferences
         SharedPreferences todos = getSharedPreferences(SHARED_PREFERENCES_TODOS, 0);
         String todoList = todos.getString(TODO_LIST, null);
+
+        if (todoList == null){
+            String initial_json = "{{\"name\":\"Comprar llet\", \"done\": true, \"priority\": 2},\n" +
+                    "        {\"name\":\"Comprar pa\", \"done\": true, \"priority\": 1},\n" +
+                    "        {\"name2\":\"Fer exercici\", \"done\": false, \"priority\": 3}}";
+
+            SharedPreferences.Editor editor = todos.edit();
+            editor.putString(SHARED_PREFERENCES_TODOS, initial_json);
+            editor.commit();
+            todoList = todos.getString(TODO_LIST, null);
+        }else {
+            //TODO
+        }
 
         gson = new Gson();
 
@@ -58,7 +74,13 @@ public class MainActivity extends AppCompatActivity
 
         Type arrayTodoList = new TypeToken<TodoArrayList>() {}.getType();
         TodoArrayList temp = gson.fromJson(todoList, arrayTodoList);
-        
+
+        if (temp != null){
+            tasks = temp;
+        }else {
+            //ERROR TODO
+        }
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
