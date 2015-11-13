@@ -56,10 +56,9 @@ public class MainActivity extends AppCompatActivity
 
          */
 
-
         Type arrayTodoList = new TypeToken<TodoArrayList>() {}.getType();
-        gson.fromJson(todoList, arrayTodoList);
-
+        TodoArrayList temp = gson.fromJson(todoList, arrayTodoList);
+        
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
