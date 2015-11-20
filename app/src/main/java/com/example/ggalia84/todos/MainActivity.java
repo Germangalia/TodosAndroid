@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -51,14 +54,20 @@ public class MainActivity extends AppCompatActivity
                     "        {\"name2\":\"Fer exercici\", \"done\": false, \"priority\": 3}}";
 
             SharedPreferences.Editor editor = todos.edit();
-            editor.putString(SHARED_PREFERENCES_TODOS, initial_json);
+            editor.putString(TODO_LIST, initial_json);
             editor.commit();
             todoList = todos.getString(TODO_LIST, null);
         }else {
             //TODO
         }
 
-        gson = new Gson();
+
+
+        Log.d("TAG_PROVA", "*********************************************************************************************");
+        Log.d("TAG_PROVA", todoList);
+        Log.d("TAG_PROVA", "*********************************************************************************************");
+
+        Toast.makeText(this, todoList, Toast.LENGTH_LONG).show();
 
         /* JSON EXAMPLE
 
@@ -73,6 +82,7 @@ public class MainActivity extends AppCompatActivity
          */
 
         Type arrayTodoList = new TypeToken<TodoArrayList>() {}.getType();
+        this.gson = new Gson();
         TodoArrayList temp = gson.fromJson(todoList, arrayTodoList);
 
         if (temp != null){
@@ -80,6 +90,9 @@ public class MainActivity extends AppCompatActivity
         }else {
             //ERROR TODO
         }
+
+
+        ListView todoslv = (ListView) findViewById(R.id.todoListView);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
