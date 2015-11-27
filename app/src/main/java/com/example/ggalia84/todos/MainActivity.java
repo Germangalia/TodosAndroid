@@ -1,6 +1,7 @@
 package com.example.ggalia84.todos;
 
-
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,10 +17,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -28,83 +30,51 @@ import java.lang.reflect.Type;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String SHARED_PREFERENCES_TODOS ="SP_TODOS";
-    private static final String TODO_LIST ="todo_list" ;
+    private static final String SHARED_PREFERENCE_TODOS = "SP_TODOS";
+    private static final String TODO_LIST = "todo_list";
     private Gson gson;
+
     public TodoArrayList tasks;
-    private CustomListAdapter adapter;
+
+    private Snackbar snackbar;
+
+
+    public static final int LENGTH_LONG = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Restore preferences
-        SharedPreferences todos = getSharedPreferences(SHARED_PREFERENCES_TODOS, 0);
-        String todoList = todos.getString(TODO_LIST, null);
-
-        /* JSON Example
-        [
-            {name:"Compra llet", "done": true, "priority": 2},
-            {name:"Compra pa", "done": true, "priority": 1},
-            {name:"Fer exercici", "done": false, "priority": 3}
-        ]
-         */
-
-        if (todoList == null){
-            String initial_json= "[\n" +
-                    "            {name:\"Compra llet\", \"done\": true, \"priority\": 2},\n" +
-                    "            {name:\"Compra pa\", \"done\": true, \"priority\": 1},\n" +
-                    "            {name:\"Fer exercici\", \"done\": false, \"priority\": 3}\n" +
-                    "        ]";
-            SharedPreferences.Editor editor = todos.edit();
-            editor.putString(TODO_LIST, initial_json);
-            editor.commit();
-            todoList = todos.getString(TODO_LIST, null);
-        }
-
-        Log.d("TAG_PROVA", "******************************************************************");
-        Log.d("TAG_PROVA", todoList);
-        Log.d("TAG_PROVA", "******************************************************************");
-
-//        Toast.makeText(this, todoList, Toast.LENGTH_LONG).show();
-
-        /* JSON Example
-        [
-            {name:"Compra llet", "done": true, "priority": 2},
-            {name:"Compra pa", "done": true, "priority": 1},
-            {name:"Fer exercici", "done": false, "priority": 3}
-        ]
-         */
-
-        Type arrayTodoList = new TypeToken<TodoArrayList>(){}.getType();
-        this.gson = new Gson();
-        TodoArrayList temp = gson.fromJson(todoList, arrayTodoList);
-
-        if (temp != null){
-            tasks = temp;
-
-        } else {
-            //Error TODO
-        }
-
-        ListView todoslv = (ListView) findViewById(R.id.todoListView);
-
-        //We bind our arraylist of tasks to the adapter
-        adapter = new CustomListAdapter(this, tasks);
-        todoslv.setAdapter(adapter);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Main2Activity.class );
-                startActivity(intent);
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //      .setAction("Action", null).show();
+
+
+                new MaterialDialog.Builder(MainActivity.this)
+                        .title("Title")
+                        .customView(R.layout.form_add_task, true)
+                        .positiveText("ADD")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog dialog, DialogAction which) {
+                                Log.v("DIALOG", "Positive");
+                            }
+                        })
+                        .negativeText("CANCEL")
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog dialog, DialogAction which) {
+                                Log.v("DIALOG", "Negative");
+                            }
+                        })
+                        .show();
+
             }
         });
 
@@ -116,6 +86,83 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        /*
+            SHARED PREFERENCES
+         */
+        SharedPreferences todos = getSharedPreferences(SHARED_PREFERENCE_TODOS, 0);
+        String todoList = todos.getString(TODO_LIST, null);
+
+        if (todoList == null)
+        {
+            String initialJson =    "[" +
+                    "{\"name\":\"Comprar llet\", \"done\": true, \"priority\": 2}," +
+                    "{\"name\":\"Comprar pa\", \"done\": false, \"priority\": 1},"  +
+                    "{\"name\":\"Comprar ous\", \"done\": false, \"priority\": 3}"  +
+                    "]";
+
+            SharedPreferences.Editor editor = todos.edit();
+            editor.putString(TODO_LIST, initialJson);
+            editor.commit();
+
+            todoList = todos.getString(TODO_LIST, null);
+        }
+
+
+        Log.v("JSON", todoList);
+
+        /*
+        snackbar = Snackbar.make(findViewById(android.R.id.content), todoList, Snackbar.LENGTH_LONG).setAction("Action", null);
+        snackbar.show();
+        Toast.makeText(this, "LOOOONG..", Toast.LENGTH_LONG).show();
+        */
+
+        gson = new Gson();
+
+        // Mapejem el JSON
+        Type arrayTodoList = new TypeToken<TodoArrayList>() {}.getType();
+        TodoArrayList temp = gson.fromJson(todoList, arrayTodoList);
+
+        if(temp != null)
+        {
+            tasks = temp;
+
+            for (int i=0; i<tasks.size(); i++)
+            {
+                Log.v("TASK", tasks.get(i).getName());
+            }
+        }
+        else
+        {
+            //Error TODO
+        }
+
+        ListView todoslv = (ListView) findViewById(R.id.todoListView);
+
+        CustomListAdapter adapter = new CustomListAdapter(this, R.layout.list_item, tasks);
+        todoslv.setAdapter(adapter);
+
+        todoslv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Log.v("Click", String.valueOf(position));
+
+            }
+        });
+
+
+        /*
+        [
+            {"name":"Comprar llet", "done": true, "priority": 2},
+            {"name":"Comprar pa", "done": false, "priority": 1},
+            {"name":"Comprar ous", "done": false, "priority": 3}
+        ]
+         */
+
+
+
+
     }
 
     @Override
