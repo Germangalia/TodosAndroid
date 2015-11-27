@@ -1,5 +1,6 @@
 package com.example.ggalia84.todos;
 
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity
     private static final String TODO_LIST ="todo_list" ;
     private Gson gson;
     public TodoArrayList tasks;
+    private CustomListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +52,11 @@ public class MainActivity extends AppCompatActivity
          */
 
         if (todoList == null){
-            String initial_json= "[{name:\"Compra llet\", \"done\": true, \"priority\": 2},\n" +
+            String initial_json= "[\n" +
+                    "            {name:\"Compra llet\", \"done\": true, \"priority\": 2},\n" +
                     "            {name:\"Compra pa\", \"done\": true, \"priority\": 1},\n" +
-                    "            {name:\"Fer exercici\", \"done\": false, \"priority\": 3}]";
+                    "            {name:\"Fer exercici\", \"done\": false, \"priority\": 3}\n" +
+                    "        ]";
             SharedPreferences.Editor editor = todos.edit();
             editor.putString(TODO_LIST, initial_json);
             editor.commit();
@@ -85,6 +89,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         ListView todoslv = (ListView) findViewById(R.id.todoListView);
+
+        //We bind our arraylist of tasks to the adapter
+        adapter = new CustomListAdapter(this, tasks);
+        todoslv.setAdapter(adapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

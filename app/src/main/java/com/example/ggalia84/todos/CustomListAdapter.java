@@ -14,12 +14,12 @@ import java.util.ArrayList;
 public class CustomListAdapter extends BaseAdapter {
     private final Context context;
     private final ArrayList<TodoItem> list;
-    private final LayoutInflater layoutInflater;
+    private final LayoutInflater layputInflater;
 
     public CustomListAdapter(Context context, ArrayList listData) {
         this.context = context;
         this.list = listData;
-        layoutInflater = LayoutInflater.from(context);
+        layputInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -40,7 +40,11 @@ public class CustomListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        contentView = inflate(R.id.todolistitem, null);
+        if(convertView == null){
+            convertView = layputInflater.inflate(R.layout.todolistitem, null);
+        } else {
+
+        }
 
         return convertView;
     }
