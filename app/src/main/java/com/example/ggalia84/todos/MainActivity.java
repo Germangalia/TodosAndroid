@@ -4,9 +4,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -40,6 +44,8 @@ public class MainActivity extends AppCompatActivity
 
 
     public static final int LENGTH_LONG = 1;
+    private String taskName;
+    private CustomListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +172,17 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+
+        gson = new Gson();
+
+        // Mapejem el JSON
+        //Type arrayTodoList = new TypeToken<TodoArrayList>() {}.getType();
+        //TodoArrayList temp = gson.toJson(todoList, arrayTodoList);
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -220,5 +237,65 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void showEditTaskForm(View view){
+
+    }
+
+    public void showAddForm(View view){
+
+        taskName = "";
+
+        EditText taskNameText;
+
+        MaterialDialog dialog = new MaterialDialog.Builder(this).
+                title("Afegir tasca").
+                customView(R.layout.form_add_task, true).
+                negativeText("Cancel·lar").
+                positiveText("Afegir").
+                negativeColor(Color.parseColor("#ff3333")).
+                positiveColor(Color.parseColor("#2196F3")).
+                onPositive(new MaterialDialog.SingleButtonCallback() {
+
+
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        final TodoItem todoItem = new TodoItem();
+                        todoItem.setName(taskName);
+                        todoItem.setDone(true);
+                        todoItem.setPriority(1);
+
+                        //task.add(todoItem);
+
+                        tasks.add(todoItem);
+                        adapter.notifyDataSetChanged();
+                    }
+                }).
+                build();
+
+        dialog.show();
+
+        taskNameText = (EditText) dialog.getCustomView().findViewById((R.id.task_title));
+
+        taskNameText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
     }
 }

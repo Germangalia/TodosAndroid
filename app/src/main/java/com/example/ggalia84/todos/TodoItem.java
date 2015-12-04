@@ -17,6 +17,13 @@ public class TodoItem {
         this.priority = priority = 1;
     }
 
+    public TodoItem() {
+        this.name = name = "";
+        this.done = done = false;
+        this.priority = priority = 1;
+    }
+
+
     public String getName() {
         return name;
     }
