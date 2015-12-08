@@ -18,7 +18,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="30dp"
+        android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:text="Prioritat:" />
 
@@ -31,17 +31,21 @@
         <RadioButton android:id="@+id/priority_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:text="Baixa"/>
 
         <RadioButton android:id="@+id/priority_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:checked="true"
             android:text="Normal"
             />
 
         <RadioButton android:id="@+id/priority_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:text="Alta"
             />
 
@@ -52,7 +56,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="30dp"
+        android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:text="Finalitzada:" />
 
@@ -65,11 +69,14 @@
         <RadioButton android:id="@+id/done_true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:text="Si"/>
 
         <RadioButton android:id="@+id/done_false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:checked="true"
             android:text="No"
             />
 
