@@ -257,4 +257,20 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+
+    public void removeTasks(View view) {
+
+        //When click on erase button, if task done = true, erase the task.
+
+        for (int i = 0; i < tasks.size(); i++) {
+
+            if(tasks.get(i).isDone() == true) {
+
+                tasks.remove(i);
+
+            }
+        }
+        //Sincronize view
+        adapter.notifyDataSetChanged();
+    }
 }
