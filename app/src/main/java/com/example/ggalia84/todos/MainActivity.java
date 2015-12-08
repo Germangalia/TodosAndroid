@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     public TodoArrayList tasks;
     private CustomListAdapter adapter;
     private String taskName;
+    private SharedPreferences todosSave;
 
     @Override
     protected void onStop() {
@@ -46,6 +47,19 @@ public class MainActivity extends AppCompatActivity
 //                SharedPreferences.Editor editor = todos.edit();
 //        editor.putString(TODO_LIST, initial_json);
 //        editor.commit();
+
+        //When the app stop, save the tasks using sharepreferences and
+
+        if (tasks == null) {
+            return;
+        }
+
+        String tasksToSave = gson.toJson(tasks);
+
+        todosSave = getSharedPreferences(SHARED_PREFERENCES_TODOS, 0);
+        SharedPreferences.Editor editor = todosSave.edit();
+        editor.putString(TODO_LIST, tasksToSave);
+        editor.apply();
     }
 
     @Override
