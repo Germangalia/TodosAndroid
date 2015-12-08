@@ -20,4 +20,14 @@
         android:id="@+id/id2"
         android:layout_margin="5dp" />
 
+    <TextView
+        android:id="@+id/todolistitemtext"
+        android:layout_width="fill_parent"
+        android:layout_height="62dp"
+        android:paddingLeft="10dp"
+        android:text="Nom"
+        android:gravity="center_vertical"
+        android:textSize="20sp"
+        android:clickable="true"/>
+
 </LinearLayout>

@@ -11,18 +11,11 @@ public class TodoItem {
     private boolean done;
     private int priority;
 
-    public TodoItem(String name, boolean done, int priority) {
-        this.name = name = "";
-        this.done = done = false;
-        this.priority = priority = 1;
-    }
-
     public TodoItem() {
-        this.name = name = "";
-        this.done = done = false;
-        this.priority = priority = 1;
+        this.name = "";
+        this.done = false;
+        this.priority = 1;
     }
-
 
     public String getName() {
         return name;

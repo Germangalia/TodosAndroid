@@ -1,6 +1,5 @@
 package com.example.ggalia84.todos;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,19 +10,17 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by ggalia84 on 20/11/15.
+ * Created by adam on 20/11/15.
  */
 public class CustomListAdapter extends BaseAdapter {
+    private final Context context;
+    private final ArrayList<TodoItem> list;
+    private final LayoutInflater layputInflater;
 
-    private Activity activity;
-    private int resource;
-    private ArrayList<TodoItem> list;
-
-    public CustomListAdapter(Activity activity, int resource, ArrayList listData)
-    {
-        this.activity = activity;
-        this.resource = resource;
+    public CustomListAdapter(Context context, ArrayList listData) {
+        this.context = context;
         this.list = listData;
+        layputInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -44,24 +41,18 @@ public class CustomListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        if(convertView == null){
+            convertView = layputInflater.inflate(R.layout.todolistitem, null);
+        } else {
 
-        if (convertView == null)
-        {
-            convertView = activity.getLayoutInflater().inflate(resource, null);
-
-            TodoItem item = list.get(position);
-
-            if (item != null)
-            {
-                TextView tv1 = (TextView) convertView.findViewById(R.id.id1);
-                TextView tv2 = (TextView) convertView.findViewById(R.id.id2);
-
-                tv1.setText(item.getName());
-                tv2.setText(String.valueOf(item.getPriority()));
-            }
         }
 
-        return convertView;
+        TextView tv = (TextView) convertView.findViewById(R.id.todolistitemtext);
 
+        tv.setText(list.get(position).getName()+
+                " p:" +list.get(position).getPriority() +
+                " d:" +list.get(position).isDone());
+
+        return convertView;
     }
 }
