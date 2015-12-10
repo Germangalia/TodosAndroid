@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class CustomListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         if(convertView == null){
             convertView = layputInflater.inflate(R.layout.todolistitem, null);
@@ -47,11 +48,44 @@ public class CustomListAdapter extends BaseAdapter {
 
         }
 
-        TextView tv = (TextView) convertView.findViewById(R.id.todolistitemtext);
+        final TextView tv = (TextView) convertView.findViewById(R.id.todolistitemtext);
+        tv.setText(list.get(position).getName());
 
-        tv.setText(list.get(position).getName()+
-                " p:" +list.get(position).getPriority() +
-                " d:" +list.get(position).isDone());
+        final CheckBox taskDone = (CheckBox) convertView.findViewById(R.id.taskdone);
+
+
+        String priorityText = "";
+
+        if(list.get(position).getPriority() == 1){
+            priorityText = "Baixa";
+        }
+        if (list.get(position).getPriority() == 2){
+            priorityText = "Normal";
+        }
+        if (list.get(position).getPriority() == 3){
+            priorityText = "Alta";
+        }
+
+        taskDone.setChecked(list.get(position).isDone());
+
+        tv.setText(tv.getText()+
+                " p:" +priorityText);
+
+        taskDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!taskDone.isChecked()) {
+                    taskDone.setChecked(false);
+                } else {
+                    taskDone.setChecked(true);
+
+                }
+
+            }
+        });
+
+
 
         return convertView;
     }

@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -216,17 +218,28 @@ public class MainActivity extends AppCompatActivity
                 positiveText("Add").
                 negativeColor(Color.parseColor("#ff3333")).
                 positiveColor(Color.parseColor("#2196F3")).
-                onPositive(new MaterialDialog.SingleButtonCallback(){
-
+                onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
                         final TodoItem todoItem = new TodoItem();
                         todoItem.setName(taskName);
-                        todoItem.setDone(true);
-                        todoItem.setPriority(1);
+                        todoItem.setDone(false);
 
+                        // Task priority
+                        RadioGroup selectedPriority = (RadioGroup) dialog.findViewById(R.id.task_priority);
+
+                        switch (selectedPriority.getCheckedRadioButtonId()) {
+                            case R.id.priority_1:
+                                todoItem.setPriority(1);
+                                break;
+                            case R.id.priority_2:
+                                todoItem.setPriority(2);
+                                break;
+                            case R.id.priority_3:
+                                todoItem.setPriority(3);
+                                break;
+                        }
                         tasks.add(todoItem);
-                        //tasks.remove(1);
                         adapter.notifyDataSetChanged();
                     }
                 }).

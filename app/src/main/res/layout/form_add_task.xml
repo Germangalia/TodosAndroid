@@ -60,26 +60,10 @@
         android:paddingBottom="10dp"
         android:text="Finalitzada:" />
 
-    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/task_done"
+    <CheckBox android:id="@+id/task_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <RadioButton android:id="@+id/done_true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:text="Si"/>
-
-        <RadioButton android:id="@+id/done_false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:checked="true"
-            android:text="No"
-            />
-
-    </RadioGroup>
+        android:text="Si / No"
+        android:checked="false" />
 
 </LinearLayout>
