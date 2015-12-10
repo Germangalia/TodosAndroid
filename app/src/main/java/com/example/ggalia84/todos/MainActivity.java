@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -223,7 +224,9 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(MaterialDialog dialog, DialogAction which) {
                         final TodoItem todoItem = new TodoItem();
                         todoItem.setName(taskName);
-                        todoItem.setDone(false);
+
+                        CheckBox selectedDone = (CheckBox) dialog.findViewById(R.id.task_done);
+                        todoItem.setDone(selectedDone.isChecked());
 
                         // Task priority
                         RadioGroup selectedPriority = (RadioGroup) dialog.findViewById(R.id.task_priority);

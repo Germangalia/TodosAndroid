@@ -68,8 +68,10 @@ public class CustomListAdapter extends BaseAdapter {
 
         taskDone.setChecked(list.get(position).isDone());
 
-        tv.setText(tv.getText()+
-                " p:" +priorityText);
+        tv.setText(tv.getText() +
+                " p:" + priorityText);
+
+               // +" d:" +list.get(position).isDone());
 
         taskDone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,8 +79,10 @@ public class CustomListAdapter extends BaseAdapter {
 
                 if (!taskDone.isChecked()) {
                     taskDone.setChecked(false);
+                    list.get(position).setDone(false);
                 } else {
                     taskDone.setChecked(true);
+                    list.get(position).setDone(true);
 
                 }
 
