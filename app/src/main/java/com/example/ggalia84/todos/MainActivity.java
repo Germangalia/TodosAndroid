@@ -22,6 +22,8 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import android.view.WindowManager;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
@@ -207,6 +209,8 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    View positiveAction;
+
     public void showAddForm(View view){
         taskName = " ";
 
@@ -251,9 +255,12 @@ public class MainActivity extends AppCompatActivity
 
         dialog.show();
 
+        positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
+        positiveAction.setEnabled(false);
+
         taskNameText = (EditText) dialog.getCustomView().findViewById(R.id.task_tittle);
 
-        taskNameText.addTextChangedListener(new TextWatcher(){
+        taskNameText.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -263,6 +270,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 taskName = s.toString();
+                positiveAction.setEnabled(taskName.trim().length() > 0);
             }
 
             @Override
@@ -289,4 +297,90 @@ public class MainActivity extends AppCompatActivity
         //Sincronize view
         adapter.notifyDataSetChanged();
     }
+
+
+    public void editTask(final int position) {
+
+        final EditText taskNameText;
+        RadioGroup checkPriority;
+
+        MaterialDialog dialog = new MaterialDialog.Builder(this).
+                title("Update Task").
+                customView(R.layout.form_add_task, true).
+                negativeText("Cancel").
+                positiveText("Update").
+                negativeColor(Color.parseColor("#ff3333")).
+                positiveColor(Color.parseColor("#2196F3")).
+                onPositive(new MaterialDialog.SingleButtonCallback() {
+
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+
+                        tasks.get(position).setName(taskName);
+                        if (tasks.get(position).isDone() == true){tasks.get(position).setDone(true);}
+                        else {tasks.get(position).setDone(false);}
+
+                        // Task priority
+                        RadioGroup taskPriority = (RadioGroup) dialog.findViewById(R.id.task_priority);
+
+                        switch (taskPriority.getCheckedRadioButtonId()) {
+                            case R.id.priority_1:
+                                tasks.get(position).setPriority(1);
+                                break;
+                            case R.id.priority_2:
+                                tasks.get(position).setPriority(2);
+                                break;
+                            case R.id.priority_3:
+                                tasks.get(position).setPriority(3);
+                                break;
+                        }
+
+                        adapter.notifyDataSetChanged();
+                    }
+                }).
+
+
+                build();
+
+        dialog.show();
+
+        taskNameText = (EditText) dialog.getCustomView().findViewById(R.id.task_tittle);
+        taskNameText.append(tasks.get(position).getName());
+        taskName = taskNameText.getText().toString();
+
+        positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
+        positiveAction.setEnabled(false);
+
+        taskNameText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                taskName = s.toString();
+                positiveAction.setEnabled(taskName.trim().length() > 0);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        checkPriority = (RadioGroup) dialog.getCustomView().findViewById(R.id.task_priority);
+        if (tasks.get(position).getPriority() == 1){checkPriority.check(R.id.priority_1);}
+        if (tasks.get(position).getPriority() == 2){checkPriority.check(R.id.priority_2);}
+        if (tasks.get(position).getPriority() == 3){checkPriority.check(R.id.priority_3);}
+
+        checkPriority.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup taskPriority, int checkedId) {
+                positiveAction.setEnabled(true);
+            }
+        });
+    }
 }
+
+

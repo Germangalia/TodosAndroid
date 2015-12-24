@@ -1,6 +1,7 @@
 package com.example.ggalia84.todos;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,24 +74,35 @@ public class CustomListAdapter extends BaseAdapter {
 
                // +" d:" +list.get(position).isDone());
 
+        showDone(tv,taskDone, position);
+
         taskDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (!taskDone.isChecked()) {
-                    taskDone.setChecked(false);
-                    list.get(position).setDone(false);
-                } else {
-                    taskDone.setChecked(true);
-                    list.get(position).setDone(true);
-
-                }
-
+                showDone(tv,taskDone, position);
             }
         });
 
-
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) context).editTask(position);
+            }
+        });
 
         return convertView;
+    }
+
+    private void showDone(TextView tv, CheckBox done, int position)
+    {
+        if (!done.isChecked()) {
+            done.setChecked(false);
+            list.get(position).setDone(false);
+            tv.setPaintFlags(0);
+        } else {
+            done.setChecked(true);
+            list.get(position).setDone(true);
+            tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
     }
 }
