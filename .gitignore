@@ -7,6 +7,7 @@
 /build
 /captures
 .idea/
+KeyStoreTodos.jks
 =======
 # Built application files
 *.apk
