@@ -11,7 +11,7 @@
         android:layout_height="48dp"
         android:inputType="textCapSentences"
         android:maxLines="1"
-        android:hint="Nom tasca"/>
+        android:hint="Nombre tarea"/>
 
     <!--- Priority -->
 
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:text="Prioritat:" />
+        android:text="Prioridad:" />
 
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/task_priority"
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:text="Baixa"/>
+            android:text="Baja"/>
 
         <RadioButton android:id="@+id/priority_2"
             android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:text="Finalitzada:" />
+        android:text="Finalizada:" />
 
     <CheckBox android:id="@+id/task_done"
         android:layout_width="wrap_content"

@@ -1,4 +1,4 @@
-package com.example.ggalia84.todos;
+package com.ggalia84.ggalia84.todos;
 
 import android.content.Context;
 import android.graphics.Paint;
@@ -58,7 +58,7 @@ public class CustomListAdapter extends BaseAdapter {
         String priorityText = "";
 
         if(list.get(position).getPriority() == 1){
-            priorityText = "Baixa";
+            priorityText = "Baja";
         }
         if (list.get(position).getPriority() == 2){
             priorityText = "Normal";
@@ -70,7 +70,7 @@ public class CustomListAdapter extends BaseAdapter {
         taskDone.setChecked(list.get(position).isDone());
 
         tv.setText(tv.getText() +
-                " p:" + priorityText);
+                " [" + priorityText + "]");
 
                // +" d:" +list.get(position).isDone());
 
@@ -83,7 +83,7 @@ public class CustomListAdapter extends BaseAdapter {
             }
         });
 
-        convertView.setOnClickListener(new View.OnClickListener() {
+        tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((MainActivity) context).editTask(position);

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.example.ggalia84.todos"
+        applicationId "com.ggalia84.ggalia84.todos"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
@@ -29,6 +29,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.google.code.gson:gson:2.4'
+    compile 'com.google.android.gms:play-services-gcm:7.8.0'
 
     compile('com.github.afollestad.material-dialogs:core:0.8.5.1@aar') {
         transitive = true

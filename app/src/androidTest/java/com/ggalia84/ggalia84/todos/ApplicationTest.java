@@ -1,4 +1,4 @@
-package com.example.ggalia84.todos;
+package com.ggalia84.ggalia84.todos;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

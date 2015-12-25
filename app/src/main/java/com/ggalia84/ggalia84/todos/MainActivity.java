@@ -1,4 +1,4 @@
-package com.example.ggalia84.todos;
+package com.ggalia84.ggalia84.todos;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -19,10 +19,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-
-import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -85,19 +82,16 @@ public class MainActivity extends AppCompatActivity
          */
 
         if (todoList == null){
-            String initial_json= "[{name:\"Compra llet\", \"done\": true, \"priority\": 2},\n" +
-                    "            {name:\"Compra pa\", \"done\": true, \"priority\": 1},\n" +
-                    "            {name:\"Compra ous\", \"done\": true, \"priority\": 4},\n" +
-                    "            {name:\"Fer exercici\", \"done\": false, \"priority\": 3}]";
+            String initial_json= "[{name:\"Ejemplo tarea 1\", \"done\": false, \"priority\": 2}]";
             SharedPreferences.Editor editor = todos.edit();
             editor.putString(TODO_LIST, initial_json);
             editor.commit();
             todoList = todos.getString(TODO_LIST, null);
         }
 
-        Log.d("TAG_PROVA", "******************************************************************");
-        Log.d("TAG_PROVA", todoList);
-        Log.d("TAG_PROVA", "******************************************************************");
+//        Log.d("TAG_PROVA", "******************************************************************");
+//        Log.d("TAG_PROVA", todoList);
+//        Log.d("TAG_PROVA", "******************************************************************");
 
 //        Toast.makeText(this, todoList, Toast.LENGTH_LONG).show();
 
@@ -217,10 +211,10 @@ public class MainActivity extends AppCompatActivity
         EditText taskNameText;
 
         MaterialDialog dialog = new MaterialDialog.Builder(this).
-                title("Add new Task").
+                title("Añadir tarea:").
                 customView(R.layout.form_add_task, true).
-                negativeText("Cancel").
-                positiveText("Add").
+                negativeText("Cancelar").
+                positiveText("Guardar").
                 negativeColor(Color.parseColor("#ff3333")).
                 positiveColor(Color.parseColor("#2196F3")).
                 onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -305,10 +299,10 @@ public class MainActivity extends AppCompatActivity
         RadioGroup checkPriority;
 
         MaterialDialog dialog = new MaterialDialog.Builder(this).
-                title("Update Task").
+                title("Editar tarea:").
                 customView(R.layout.form_add_task, true).
-                negativeText("Cancel").
-                positiveText("Update").
+                negativeText("Cancelar").
+                positiveText("Guardar").
                 negativeColor(Color.parseColor("#ff3333")).
                 positiveColor(Color.parseColor("#2196F3")).
                 onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -317,8 +311,11 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(MaterialDialog dialog, DialogAction which) {
 
                         tasks.get(position).setName(taskName);
-                        if (tasks.get(position).isDone() == true){tasks.get(position).setDone(true);}
-                        else {tasks.get(position).setDone(false);}
+                        if (tasks.get(position).isDone() == true) {
+                            tasks.get(position).setDone(true);
+                        } else {
+                            tasks.get(position).setDone(false);
+                        }
 
                         // Task priority
                         RadioGroup taskPriority = (RadioGroup) dialog.findViewById(R.id.task_priority);

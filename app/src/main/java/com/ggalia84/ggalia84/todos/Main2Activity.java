@@ -1,4 +1,4 @@
-package com.example.ggalia84.todos;
+package com.ggalia84.ggalia84.todos;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
