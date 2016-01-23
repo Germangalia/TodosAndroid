@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity
     private String taskName;
     private SharedPreferences todosSave;
 
+    private SwipeRefreshLayout swipeContainer;
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -72,6 +75,25 @@ public class MainActivity extends AppCompatActivity
         // Restore preferences
         SharedPreferences todos = getSharedPreferences(SHARED_PREFERENCES_TODOS, 0);
         String todoList = todos.getString(TODO_LIST, null);
+
+        //Pull to refresh
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                //loadTasksOnLineION();
+
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         /* JSON Example
         [

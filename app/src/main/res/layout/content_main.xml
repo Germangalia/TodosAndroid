@@ -9,11 +9,18 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior" tools:showIn="@layout/app_bar_main"
     tools:context=".MainActivity">
 
-    <ListView
-        android:id="@+id/todolistview"
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        android:layout_height="match_parent">
 
-    </ListView>
+        <ListView
+            android:id="@+id/todolistview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>
