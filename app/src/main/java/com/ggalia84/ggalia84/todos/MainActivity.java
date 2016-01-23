@@ -3,6 +3,7 @@ package com.ggalia84.ggalia84.todos;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
@@ -25,7 +26,10 @@ import android.widget.RadioGroup;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 import java.lang.reflect.Type;
 
@@ -72,10 +76,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Restore preferences
-        SharedPreferences todos = getSharedPreferences(SHARED_PREFERENCES_TODOS, 0);
-        String todoList = todos.getString(TODO_LIST, null);
-
         //Pull to refresh
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
 
@@ -85,9 +85,10 @@ public class MainActivity extends AppCompatActivity
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                //loadTasksOnLineION();
+                loadTasksOnLineION();
 
             }
+
         });
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
@@ -103,11 +104,48 @@ public class MainActivity extends AppCompatActivity
         ]
          */
 
-        if (todoList == null){
-            String initial_json= "[{name:\"Ejemplo tarea 1\", \"done\": false, \"priority\": 2}]";
+
+
+    }
+
+    private void loadTasksOnLineION() {
+        Ion.with(this)
+                .load("http://acacha.github.io/json-server-todos/db_todos.json")
+                .asJsonArray()
+                .setCallback(new FutureCallback<JsonArray>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonArray result) {
+                        if (e != null) {
+                            tasks = loadTasksFromSharedPreferences();
+                        }
+                        else {
+                            Type arrayTodoList = new TypeToken<TodoArrayList>() {}.getType();
+                            gson = new Gson();
+                            tasks = gson.fromJson(result.toString(), arrayTodoList);
+                        }
+
+                        if(tasks == null) { return; }
+
+                        swipeContainer.setRefreshing(false);
+
+                        loadTaskView();
+
+                    }
+                });
+        //swipeContainer.setRefreshing(false);
+    }
+
+    public TodoArrayList loadTasksFromSharedPreferences() {
+
+        // Restore preferences
+        SharedPreferences todos = getSharedPreferences(SHARED_PREFERENCES_TODOS, 0);
+        String todoList = todos.getString(TODO_LIST, null);
+
+        if (todoList == null) {
+            String initial_json = "[{name:\"Ejemplo tarea 1\", \"done\": false, \"priority\": 2}]";
             SharedPreferences.Editor editor = todos.edit();
             editor.putString(TODO_LIST, initial_json);
-            editor.commit();
+            editor.apply();
             todoList = todos.getString(TODO_LIST, null);
         }
 
@@ -125,17 +163,22 @@ public class MainActivity extends AppCompatActivity
         ]
          */
 
-        Type arrayTodoList = new TypeToken<TodoArrayList>(){}.getType();
+        Type arrayTodoList = new TypeToken<TodoArrayList>() {
+        }.getType();
         this.gson = new Gson();
         TodoArrayList temp = gson.fromJson(todoList, arrayTodoList);
 
-        if (temp != null){
+        if (temp != null) {
             tasks = temp;
 
         } else {
             //Error TODO
         }
+        return tasks;
+    }
 
+
+    public void loadTaskView() {
         ListView todoslv = (ListView) findViewById(R.id.todolistview);
 
         //We bind our arraylist of tasks to the adapter
@@ -147,16 +190,16 @@ public class MainActivity extends AppCompatActivity
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         FloatingActionButton fabRemove = (FloatingActionButton) findViewById(R.id.fab_remove);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                //Intent intent = new Intent(MainActivity.this, Main2Activity.class );
-//                //startActivity(intent);
-//                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                  //      .setAction("Action", null).show();
-//            }
-//        });
+        //        fab.setOnClickListener(new View.OnClickListener() {
+        //            @Override
+        //            public void onClick(View view) {
+        //
+        //                //Intent intent = new Intent(MainActivity.this, Main2Activity.class );
+        //                //startActivity(intent);
+        //                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+        //                  //      .setAction("Action", null).show();
+        //            }
+        //        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
