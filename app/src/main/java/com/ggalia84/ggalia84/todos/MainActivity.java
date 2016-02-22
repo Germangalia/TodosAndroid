@@ -25,6 +25,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -447,7 +448,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    public boolean isOnline() {
+    public boolean isOnlineWifi() {
         ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -456,6 +457,19 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
+        return false;
+    }
+
+    protected Boolean isOnlineMovil(){
+        ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo info = connectivity.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            if (info != null) {
+                if (info.isConnected()) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
