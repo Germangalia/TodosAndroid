@@ -11,9 +11,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by adam on 20/11/15.
- */
 public class CustomListAdapter extends BaseAdapter {
     private final Context context;
     private final ArrayList<TodoItem> list;

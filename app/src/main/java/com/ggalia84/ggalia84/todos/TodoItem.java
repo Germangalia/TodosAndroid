@@ -2,9 +2,6 @@ package com.ggalia84.ggalia84.todos;
 
 import com.google.gson.Gson;
 
-/**
- * Created by adam on 13/11/15.
- */
 public class TodoItem {
 
     private String name;
