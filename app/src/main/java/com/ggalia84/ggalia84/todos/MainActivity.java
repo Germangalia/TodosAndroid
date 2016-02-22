@@ -1,6 +1,7 @@
 package com.ggalia84.ggalia84.todos;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -88,6 +90,17 @@ public class MainActivity extends AppCompatActivity
             public void onRefresh() {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
+                if (!isOnlineWifi()) {
+
+                    if(!isOnlineMovil()){
+                        Toast.makeText(getBaseContext(),"Comprueba tu conexión a Internet.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getBaseContext(),"Tienes conexión de datos móviles.", Toast.LENGTH_SHORT).show();
+                    }
+
+                }else{
+                    Toast.makeText(getBaseContext(),"Tienes conexión Wifi.", Toast.LENGTH_SHORT).show();
+                }
                 // once the network request has completed successfully.
                 loadTasksOnLineION();
 
@@ -472,6 +485,7 @@ public class MainActivity extends AppCompatActivity
         }
         return false;
     }
+
 
 }
 
