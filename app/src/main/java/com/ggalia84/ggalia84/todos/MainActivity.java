@@ -91,15 +91,10 @@ public class MainActivity extends AppCompatActivity
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 if (!isOnlineWifi()) {
-
-                    if(!isOnlineMovil()){
-                        Toast.makeText(getBaseContext(),"Comprueba tu conexión a Internet.", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(getBaseContext(),"Tienes conexión de datos móviles.", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(getBaseContext(),"No tienes conexión. Comprueba tu conexión a Internet.", Toast.LENGTH_SHORT).show();
 
                 }else{
-                    Toast.makeText(getBaseContext(),"Tienes conexión Wifi.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(),"Tienes conexión a internet.", Toast.LENGTH_SHORT).show();
                 }
                 // once the network request has completed successfully.
                 loadTasksOnLineION();
@@ -472,20 +467,6 @@ public class MainActivity extends AppCompatActivity
 
         return false;
     }
-
-    protected Boolean isOnlineMovil(){
-        ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity != null) {
-            NetworkInfo info = connectivity.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-            if (info != null) {
-                if (info.isConnected()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
 
 }
 
