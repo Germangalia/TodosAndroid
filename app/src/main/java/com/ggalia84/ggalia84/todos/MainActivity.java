@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity
                 if (!isOnlineWifi()) {
                     Toast.makeText(getBaseContext(),"No tienes conexión. Comprueba tu conexión a Internet.", Toast.LENGTH_SHORT).show();
                     swipeContainer.setRefreshing(false);
+                    tasks = loadTasksFromSharedPreferences();
                 }else{
                     Toast.makeText(getBaseContext(),"Tienes conexión a internet.", Toast.LENGTH_SHORT).show();
                     // once the network request has completed successfully.
